@@ -16,7 +16,7 @@ import App from './App.jsx'; // Importing the App component from App.jsx file
 const anotherElement = (
   <a href="https://google.com" target='_blank'>Visit google</a>
 )
-
+// objects are evaluated expressins we can't insert decisions here just conclusions aur printing statements should be there not if ,else or other 
 // using react
 const reactElement = React.createElement(
   'a',
