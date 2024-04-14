@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, useRef } from 'react';
 import reactLogo from './assets/react.svg'; // Assuming you have an SVG file named react.svg in the assets folder
 import viteLogo from '/vite.svg'; // Assuming you have an SVG file named vite.svg at the root level
 
-function App() {
+function App(){
   const [password, setPassword] = useState(""); // State for storing generated password
   const [allowNumber, setAllowNumber] = useState(false); // State for allowing numbers in password
   const [allowCharacter, setAllowCharacter] = useState(false); // State for allowing special characters in password
