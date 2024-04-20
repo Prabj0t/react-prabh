@@ -1,86 +1,75 @@
-import { useState } from 'react'
-import { InputBox } from '../components'
-import useCurrencyInfo from '../hooks/useCurrencyInfo.js'
-import './App.css'
+import { useState } from 'react'; // Importing useState hook from React
+import { InputBox } from './components'; // Importing InputBox component
+import useCurrencyInfo from './hooks/useCurrencyInfo'; // Importing custom hook useCurrencyInfo
+import './App.css'; // Importing CSS file for styling
 
 function App() {
-  const [count, setCount] = useState(0)
+    // State variables for input amount, currency from, currency to, and converted amount
+    const [amount, setAmount] = useState(0);
+    const [from, setFrom] = useState('usd');
+    const [to, setTo] = useState('inr');
+    const [convertedAmount, setConvertedAmount] = useState(0);
 
-  const [amount, setAmount] = useState(0)
-  const [from, setFrom] = useState("usd")
-  const [to, setTo] = useState("inr")
-  const [convertedAmount, setConvertedAmount] = useState(0)
+    // Fetching currency exchange rate information based on the selected "from" currency
+    const currencyInfo = useCurrencyInfo(from);
+    const options = Object.keys(currencyInfo); // Extracting currency options from fetched data
 
-  const currencyInfo = useCurrencyInfo(from)
+    // Function to swap "from" and "to" currencies
+    const swap = () => {
+        setFrom(to);
+        setTo(from);
+        setConvertedAmount(amount);
+        setAmount(convertedAmount);
+    };
 
-  const options = Object.keys(currencyInfo)
+    // Function to convert currency based on the input amount and selected currencies
+    const convert = () => {
+        setConvertedAmount(amount * currencyInfo[to]);
+    };
 
-
-  const swap = () => {
-    setFrom(to)
-    setTo(from)
-    setConvertedAmount(amount)
-    setAmount(convertedAmount)
-  }
-
-
-  const convert = () => {
-    setConvertedAmount(amount * currencyInfo[to])
-  }
-
-  return (
-    <div
-        className="w-full h-screen flex flex-wrap justify-center items-center bg-cover bg-no-repeat"
-        style={{
-            backgroundImage: `url('https://images.pexels.com/photos/3532540/pexels-photo-3532540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')`,
-        }}
-    >
-        <div className="w-full">
-            <div className="w-full max-w-md mx-auto border border-gray-60 rounded-lg p-5 backdrop-blur-sm bg-white/30">
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        convert()
-                       
-                    }}
-                >
-                    <div className="w-full mb-1">
+    return (
+        <div className="bg-cover bg-no-repeat bg-center min-h-screen flex items-center justify-center" style={{ backgroundImage: `url('https://images.pexels.com/photos/3532540/pexels-photo-3532540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')`, }}>
+            <div className="bg-white bg-opacity-30 p-8 rounded-lg max-w-md w-full">
+                <form onSubmit={(e) => {
+                    e.preventDefault(); // Prevent default form submission behavior
+                    convert(); // Call convert function on form submission
+                }}>
+                    <div className="mb-4">
                         <InputBox
                             label="From"
                             amount={amount}
                             currencyOptions={options}
-                            onCurrencyChange={(currency) => setAmount(amount)}
+                            onCurrencyChange={(currency) => setFrom(currency)}
                             selectCurrency={from}
                             onAmountChange={(amount) => setAmount(amount)}
                         />
                     </div>
-                    <div className="relative w-full h-0.5">
+                    <div className=" mb-4">
                         <button
                             type="button"
-                            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-blue-600 text-white px-2 py-0.5"
-                            onClick={swap}
+                            className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-blue-600 text-white px-5 py-3"
+                            onClick={swap} // Call swap function on button click
                         >
-                            swap
+                            Swap
                         </button>
                     </div>
-                    <div className="w-full mt-1 mb-4">
+                    <div className="mb-4">
                         <InputBox
                             label="To"
                             amount={convertedAmount}
                             currencyOptions={options}
                             onCurrencyChange={(currency) => setTo(currency)}
-                            selectCurrency={from}
+                            selectCurrency={to}
                             amountDisable
                         />
                     </div>
-                    <button type="submit" className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg">
+                    <button type="submit" className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg">
                         Convert {from.toUpperCase()} to {to.toUpperCase()}
                     </button>
                 </form>
             </div>
         </div>
-    </div>
-);
+    );
 }
 
-export default App
+export default App;
