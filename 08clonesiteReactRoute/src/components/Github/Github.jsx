@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
-export default function GithubProfile() {
-    const [data, setData] = useState({});
+function GitHub() {
+    // const [data, setData] = useState({});
 
-    useEffect(() => {
-        fetch('https://api.github.com/users/prabj0t')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setData(data);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch('https://api.github.com/users/prabj0t')
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             console.log(data);
+    //             setData(data);
+    //         });
+    // }, []);
+
+    const data = useLoaderData()
 
     return (
         <div className="flex items-center p-6 bg-gray-700 text-white">
@@ -36,10 +38,19 @@ export default function GithubProfile() {
                     <p className="text-lg">Public Repos: {data.public_repos}</p>
                 </div>
 
-                <Link to={data.html_url} target="_blank" rel="noopener noreferrer" className="mt-4 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded">
+                <Link to={data.html_url} target="_blank" rel="noopener noreferrer" className="mt-4 py-2 px-4 bg-purple-700 hover:bg-purple-600 text-white rounded">
                     Visit GitHub Profile
                 </Link>
             </div>
         </div>
     );
+}
+
+export default GitHub
+
+
+export const githubInfoLoader = async () => {
+    const response = await fetch('https://api.github.com/users/m-njot-singh')
+
+    return response.json()
 }
